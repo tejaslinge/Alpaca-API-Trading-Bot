@@ -15,8 +15,8 @@ from datetime import timedelta
 import os.path
 
 key = json.loads(open('AUTH/auth.txt', 'r').read())
-api = alpaca.REST(key['APCA-API-KEY-ID'], key['APCA-API-SECRET-KEY'], base_url='https://api.alpaca.markets', api_version = 'v2')
-tickers = open('AUTH/Tickers.txt', 'r').read()
+api = alpaca.REST(key['APCA-API-KEY-ID'], key['APCA-API-SECRET-KEY'], base_url='https://paper-api.alpaca.markets', api_version = 'v2')
+tickers = open('TICKERS/my_tickers.txt', 'r').read()
 tickers = tickers.upper().split()
 global TICKERS 
 TICKERS = tickers
@@ -229,8 +229,8 @@ def mail_alert(mail_content, sleep_time):
     time.sleep(sleep_time)
 
 def main():
-    
-    if api.get_clock().is_open == True:
+    clock = api.get_clock()
+    if not clock.is_open:
     # sends mail when bot starts running
         mail_content = 'The bot started running on {} at {} UTC'.format(dt.now().strftime('%Y-%m-%d'), dt.now().strftime('%H:%M:%S'))
         mail_alert(mail_content, 0)
